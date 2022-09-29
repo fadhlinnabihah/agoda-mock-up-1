@@ -63,8 +63,9 @@ const SignInForm = () => {
 
   return (
     <div className="sign-in-container">
-      <h2>Sign in</h2>
+      <h1>Sign in</h1>
       <span>For security, please sign in to access your information</span>
+      <h9>&nbsp;</h9>
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
@@ -72,6 +73,7 @@ const SignInForm = () => {
           required
           onChange={handleChange}
           name="email"
+          placeholder="Email"
           value={email}
         />
 
@@ -81,19 +83,24 @@ const SignInForm = () => {
           required
           onChange={handleChange}
           name="password"
+          placeholder="Password"
           value={password}
         />
         <div className="buttons-container">
           <Button type="submit">Sign In</Button>
         </div>
         <h9>&nbsp;</h9>
+        <div class="line">
+          <h1>or sign in with</h1>
+          &nbsp;
+        </div>
         <div className="buttons-container">
           <Button
             buttonType={BUTTON_TYPE_CLASSES.google}
             type="button"
             onClick={signInWithGoogle}
           >
-            Sign In With Google
+            Google
           </Button>
         </div>
       </form>

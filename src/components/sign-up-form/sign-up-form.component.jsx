@@ -1,18 +1,20 @@
 import { useState, useContext } from "react";
 
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import { UserContext } from "../../contexts/user.context";
 
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
+  signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 
 import "./sign-up-form.styles.scss";
 
 const defaultFormFields = {
-  displayName: "",
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -20,12 +22,17 @@ const defaultFormFields = {
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { displayName, email, password, confirmPassword } = formFields;
+  const { firstName, lastName, email, password, confirmPassword } = formFields;
   const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
+    const signInWithGoogle = async () => {
+      const { user } = await signInWithGooglePopup();
+      setCurrentUser(user);
+    };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,7 +48,7 @@ const SignUpForm = () => {
         password
       );
 
-      await createUserDocumentFromAuth(user, { displayName });
+      await createUserDocumentFromAuth(user, { firstName });
       resetFormFields();
       setCurrentUser(user);
     } catch (error) {
@@ -61,16 +68,26 @@ const SignUpForm = () => {
 
   return (
     <div className="sign-up-container">
-      <h2>Don't have an account?</h2>
-      <span>Sign up with your email and password</span>
+      <h1>Sign up</h1>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label="Display Name"
+          label="First name"
           type="text"
           required
           onChange={handleChange}
-          name="displayName"
-          value={displayName}
+          name="firstName"
+          placeholder="First name"
+          value={firstName}
+        />
+
+        <FormInput
+          label="Last name"
+          type="text"
+          required
+          onChange={handleChange}
+          name="lastName"
+          placeholder="Last name"
+          value={lastName}
         />
 
         <FormInput
@@ -79,6 +96,7 @@ const SignUpForm = () => {
           required
           onChange={handleChange}
           name="email"
+          placeholder="Email"
           value={email}
         />
 
@@ -88,6 +106,7 @@ const SignUpForm = () => {
           required
           onChange={handleChange}
           name="password"
+          placeholder="Password"
           value={password}
         />
 
@@ -97,9 +116,24 @@ const SignUpForm = () => {
           required
           onChange={handleChange}
           name="confirmPassword"
+          placeholder="Confirm Password"
           value={confirmPassword}
         />
         <Button type="submit">Sign Up</Button>
+        <h9>&nbsp;</h9>
+        <div class="line">
+          <h1>or continue with</h1>
+          &nbsp;
+        </div>
+        <div className="buttons-container">
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={signInWithGoogle}
+          >
+            Google
+          </Button>
+        </div>
       </form>
     </div>
   );

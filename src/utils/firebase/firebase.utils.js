@@ -11,12 +11,12 @@ import {
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk",
-  authDomain: "crwn-clothing-db-98d4d.firebaseapp.com",
-  projectId: "crwn-clothing-db-98d4d",
-  storageBucket: "crwn-clothing-db-98d4d.appspot.com",
-  messagingSenderId: "626766232035",
-  appId: "1:626766232035:web:506621582dab103a4d08d6",
+  apiKey: "AIzaSyBptZ0GaYIM3atHWQb9FclT5nvP2hlSEAw",
+  authDomain: "agoda-mock-up.firebaseapp.com",
+  projectId: "agoda-mock-up",
+  storageBucket: "agoda-mock-up.appspot.com",
+  messagingSenderId: "729740944550",
+  appId: "1:729740944550:web:6c819dad83487ba1588067",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -46,12 +46,13 @@ export const createUserDocumentFromAuth = async (
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
-    const { displayName, email } = userAuth;
+    const { firstName, lastName, email } = userAuth;
     const createdAt = new Date();
 
     try {
       await setDoc(userDocRef, {
-        displayName,
+        firstName,
+        lastName,
         email,
         createdAt,
         ...additionalInformation,
